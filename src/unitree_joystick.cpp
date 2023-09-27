@@ -5,17 +5,19 @@ namespace unitree_joy {
 UnitreeJoystick::UnitreeJoystick(DogType dog)
   :Joystick("UnitreeJoystick"), _dog(dog)
 {
-  switch (_dog)
-  {
-  case DogType::Aliengo:
-    _udp = std::make_shared<UNITREE_ARM::UDPPort>("192.168.123.220", 8012, 8112);
-    _udp->resetIO(UNITREE_ARM::BlockYN::NO, UNITREE_LEGGED_SDK_ALIENGO::HIGH_STATE_LENGTH, 100000);
-    break;
-  case DogType::B1:
-    _udp = std::make_shared<UNITREE_ARM::UDPPort>("192.168.123.220", 8012, 8112);
-    _udp->resetIO(UNITREE_ARM::BlockYN::NO, UNITREE_LEGGED_SDK_B1::HIGH_STATE_LENGTH, 100000);
-    break;
-  }
+  _udp = std::make_shared<UNITREE_ARM::UDPPort>("192.168.123.10", 8007, 8082);
+  _udp->resetIO(UNITREE_ARM::BlockYN::NO, UNITREE_LEGGED_SDK_ALIENGO::LOW_STATE_LENGTH, 100000);
+  // switch (_dog)
+  // {
+  // case DogType::Aliengo:
+  //   _udp = std::make_shared<UNITREE_ARM::UDPPort>("192.168.123.220", 8012, 8112);
+  //   _udp->resetIO(UNITREE_ARM::BlockYN::NO, UNITREE_LEGGED_SDK_ALIENGO::HIGH_STATE_LENGTH, 100000);
+  //   break;
+  // case DogType::B1:
+  //   _udp = std::make_shared<UNITREE_ARM::UDPPort>("192.168.123.220", 8012, 8112);
+  //   _udp->resetIO(UNITREE_ARM::BlockYN::NO, UNITREE_LEGGED_SDK_B1::HIGH_STATE_LENGTH, 100000);
+  //   break;
+  // }
 
   //create the connection
   _updateThread = std::make_shared< UNITREE_ARM::LoopFunc>("readJoystick", 0.001, boost::bind(&UnitreeJoystick::_read, this));
@@ -30,20 +32,23 @@ UnitreeJoystick::~UnitreeJoystick()
 void UnitreeJoystick::_read()
 {
   int zerodata = 0;
-  switch (_dog)
-  {
-  case DogType::Aliengo:
-    _udp->send((uint8_t*)&_udpCmdAliengo, UNITREE_LEGGED_SDK_ALIENGO::HIGH_CMD_LENGTH);
-    _udp->recv((uint8_t*)&_udpStateAliengo);
-    memcpy(&_unitreeJoyData, _udpStateAliengo.wirelessRemote, 40);
-    break;
-  case DogType::B1:
-    // Sneds single int data to sdk indicates that is not a command data, only for dog state
-    _udp->send((uint8_t*)&zerodata, sizeof(int));
-    _udp->recv((uint8_t*)&_udpStateB1);
-    memcpy(&_unitreeJoyData, &_udpStateB1.wirelessRemote[0], 40);
-    break;
-  }
+  _udp->send((uint8_t*)&_udpCmdAliengo, UNITREE_LEGGED_SDK_ALIENGO::LOW_CMD_LENGTH);
+  _udp->recv((uint8_t*)&_udpStateAliengo);
+  memcpy(&_unitreeJoyData, _udpStateAliengo.wirelessRemote, 40);
+  // switch (_dog)
+  // {
+  // case DogType::Aliengo:
+  //   _udp->send((uint8_t*)&_udpCmdAliengo, UNITREE_LEGGED_SDK_ALIENGO::HIGH_CMD_LENGTH);
+  //   _udp->recv((uint8_t*)&_udpStateAliengo);
+  //   memcpy(&_unitreeJoyData, _udpStateAliengo.wirelessRemote, 40);
+  //   break;
+  // case DogType::B1:
+  //   // Sneds single int data to sdk indicates that is not a command data, only for dog state
+  //   _udp->send((uint8_t*)&zerodata, sizeof(int));
+  //   _udp->recv((uint8_t*)&_udpStateB1);
+  //   memcpy(&_unitreeJoyData, &_udpStateB1.wirelessRemote[0], 40);
+  //   break;
+  // }
   _convertJoyData(_unitreeJoyData, joyData_);
 }
 

@@ -5,7 +5,7 @@
 bool running = true;
 
 int main(int argc, char** argv){
-    std::string controllerName = (argc > 1) ? argv[1] : "B1";
+    std::string controllerName = (argc > 1) ? argv[1] : "Aliengo";
 #ifdef COMPILE_WITH_SIMULATION
     //Run joy_node first
     ros::init(argc, argv, "z1_joystick");

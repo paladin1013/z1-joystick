@@ -85,8 +85,10 @@ private:
   xRockerBtnDataStruct _unitreeJoyData{};
   std::shared_ptr<UNITREE_ARM::LoopFunc> _updateThread;
   std::shared_ptr<UNITREE_ARM::UDPPort> _udp;
-  UNITREE_LEGGED_SDK_ALIENGO::HighCmd _udpCmdAliengo{};
-  UNITREE_LEGGED_SDK_ALIENGO::HighState _udpStateAliengo{};
+  // UNITREE_LEGGED_SDK_ALIENGO::HighCmd _udpCmdAliengo{};
+  // UNITREE_LEGGED_SDK_ALIENGO::HighState _udpStateAliengo{};
+  UNITREE_LEGGED_SDK_ALIENGO::LowCmd _udpCmdAliengo{};
+  UNITREE_LEGGED_SDK_ALIENGO::LowState _udpStateAliengo{};
   UNITREE_LEGGED_SDK_B1::HighState _udpStateB1{};
 };
 

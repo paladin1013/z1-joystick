@@ -28,7 +28,7 @@ file(GLOB_RECURSE ADD_SRC_LIST
 
 link_directories(lib)
 add_library(${PROJECT_NAME}_lib ${ADD_SRC_LIST})
-target_link_libraries(${PROJECT_NAME}_lib Z1_SDK_Linux64)
+target_link_libraries(${PROJECT_NAME}_lib Z1_SDK_${CMAKE_SYSTEM_PROCESSOR})
 
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

@@ -162,7 +162,8 @@ namespace UNITREE_LEGGED_SDK_ALIENGO
 
 	constexpr int HIGH_CMD_LENGTH   = (sizeof(HighCmd));
 	constexpr int HIGH_STATE_LENGTH = (sizeof(HighState));
-	
+	constexpr int LOW_CMD_LENGTH   = (sizeof(LowCmd));
+	constexpr int LOW_STATE_LENGTH = (sizeof(LowState));
 }
 
 #endif
